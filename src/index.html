@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Crop-Waste Exchange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><span>🌾</span> AI Crop-Waste Exchange</div>
+    <button class="back" id="backBtn" data-act="go" data-s="home">‹</button>
+    <button class="loc" data-act="loc"><span class="pin">📍</span><div><b>Home ▾</b><small id="locText"></small></div></button>
+    <div class="top-r">
+      <div class="seg" id="roleSeg"><button data-act="role" data-r="farmer" class="on">Farmer</button><button data-act="role" data-r="buyer">Buyer</button></div>
+      <button class="round" data-act="bell">🔔<i id="bellCount"></i></button>
+    </div>
+  </header>
+
+  <section class="screen on" id="home"></section>
+
+  <section class="screen" id="market">
+    <div class="row"><h3 id="mtitle" style="margin:0"></h3><span id="mpost"></span></div>
+    <p class="hi" id="msub" style="margin:.2rem 0 .7rem"></p>
+    <div class="search">🔍<input id="mq" placeholder=""></div>
+    <div class="chips" id="mchips"></div>
+    <div class="row" style="margin-bottom:.6rem"><span class="hi" style="margin:0" id="mcount"></span>
+      <select id="msort" style="width:auto;padding:.4rem .6rem;font-size:.72rem"></select></div>
+    <div id="mlist" class="flist"></div>
+  </section>
+
+  <section class="screen" id="sell">
+    <h3>List your crop waste</h3>
+    <div class="card">
+      <label>Crop residue type</label>
+      <select id="fCrop"></select>
+      <div class="g2">
+        <div><label>Quantity (tonnes)</label><input type="number" id="fQty" value="4" min="0.5" step="0.5"></div>
+        <div><label>Farmer name</label><input id="fName" value="Demo Farmer"></div>
+        <div><label>State</label><select id="fState"></select></div>
+        <div><label>City / village</label><input id="fCity"></div>
+      </div>
+      <div class="note" id="fNote"></div>
+      <label>Photo of residue</label>
+      <input type="file" id="fPhoto" accept="image/*">
+      <img class="prev" id="fPrev" alt="preview">
+      <button class="btn" data-act="analyze">✨ Analyze with AI</button>
+    </div>
+    <div id="sellOut"></div>
+  </section>
+
+  <section class="screen" id="orders"></section>
+
+  <section class="screen" id="ai">
+    <h3>🤖 Ask the AI assistant</h3>
+    <div class="chips" id="aiChips"></div>
+    <div class="chat" id="chat"></div>
+    <div class="ask"><input id="aq" placeholder="e.g. What is the use of this product?"><button class="btn sm" data-act="send">Send</button></div>
+  </section>
+
+  <section class="screen" id="dash"></section>
+
+  <section class="screen" id="uses">
+    <h3>What is crop residue used for?</h3>
+    <div class="g2" id="useGrid"></div>
+    <h3>Typical use by state</h3>
+    <select id="uState"></select>
+    <div class="note" id="uNote"></div>
+  </section>
+
+  <section class="screen" id="food">
+    <h3>🍽️ Food &amp; drink upcycling</h3>
+    <p class="hi">Clean, food-grade by-products (not straw or husk) can become recipes and drinks. Pick one:</p>
+    <div class="chips" id="fChips"></div>
+    <div id="fOut"></div>
+  </section>
+
+  <div class="catfab-wrap" id="catWrap"><button class="catfab" data-act="cats">☰ Category</button></div>
+  <nav id="nav"></nav>
+</div>
+<div class="sbg" id="sbg"><div class="sheet" id="sheet"></div></div>
+<div id="toasts"></div>
+<script src="js/data.js"></script>
+    <script src="js/demand.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/food.js"></script>
+    <script src="js/sync.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

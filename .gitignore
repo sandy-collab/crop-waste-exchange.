@@ -1,0 +1,18 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# secrets and local data - never upload these
+.env
+world.json
+
+# node / tests
+node_modules/
+.pytest_cache/
+
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/

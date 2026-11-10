@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1FA547">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CW Farmer">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Crop-Waste Farmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* style.css - all the styling of the app.
+   Mobile first: the base rules are for phones, the @media blocks at the bottom are for tablet and laptop. */
+
+:root {
+  --g: #1fa547;
+  --gd: #168a38;
+  --gs: #e6f5ea;
+  --bg: #ffffff;
+  --page: #ffffff;
+  color-scheme: light;
+  --card: #ffffff;
+  --soft: #f7f8f7;
+  --line: #ebeeeb;
+  --tx: #1d2a21;
+  --mu: #6c7a70;
+  --amber: #f5a623;
+  --r: 16px;
+  --w: 430px;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--tx);
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+  min-height: 100%;
+}
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+input,
+select {
+  font-family: inherit;
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--soft);
+  color: var(--tx);
+  font-size: 0.88rem;
+}
+input:focus,
+select:focus {
+  outline: 2px solid var(--g);
+  outline-offset: 0;
+  border-color: transparent;
+}
+label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--mu);
+  margin: 0.7rem 0 0.25rem;
+}
+/* ---------- main wrapper ---------- */
+.app {
+  max-width: var(--w);
+  margin: 0 auto;
+  background: var(--bg);
+  min-height: 100vh;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+}
+/* header */
+/* ---------- header ---------- */
+.top {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.back {
+  background: var(--soft);
+  color: var(--tx);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  display: none;
+}
+.loc {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: none;
+  color: var(--tx);
+  text-align: left;
+  padding: 0;
+}
+.loc .pin {
+  font-size: 1.1rem;
+  color: var(--g);
+}
+.loc b {
+  font-size: 0.92rem;
+  display: block;
+  line-height: 1.1;
+}
+.loc small {
+  font-size: 0.66rem;
+  color: var(--mu);
+  display: block;
+}
+.top-r {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.seg {
+  display: flex;
+  background: var(--soft);
+  border-radius: 20px;
+  padding: 2px;
+}
+.seg button {
+  background: none;
+  color: var(--mu);
+  padding: 0.3rem 0.7rem;
+  border-radius: 18px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.seg button.on {
+  background: var(--g);
+  color: #fff;
+}
+.round {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--g);
+  color: #fff;
+  font-size: 1rem;
+}
+.round i {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 9px;
+  background: var(--amber);
+  color: #3a2800;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+/* screens */
+/* ---------- screens ---------- */
+.screen {
+  display: none;
+  padding: 1rem 1rem 7.5rem;
+  animation: in 0.22s ease;
+}
+.screen.on {
+  display: block;
+}
+@keyframes in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+h3 {
+  font-size: 1rem;
+  margin: 1.2rem 0 0.7rem;
+  font-weight: 700;
+}
+h3:first-child {
+  margin-top: 0;
+}
+.hi {
+  font-size: 0.8rem;
+  color: var(--mu);
+  margin: 0 0 0.6rem;
+}
+/* ---------- home: banner and category tiles ---------- */
+.banner {
+  border-radius: 20px;
+  padding: 1.1rem 1rem;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-height: 128px;
+  background: linear-gradient(120deg, #17863a, #31b957 60%, #7bd36b);
+}
+.banner:before {
+  content: "";
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+}
+.banner .tag {
+  display: inline-block;
+  background: var(--amber);
+  color: #3a2800;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+}
+.banner h2 {
+  margin: 0.45rem 0 0.15rem;
+  font-size: 1.55rem;
+  line-height: 1.05;
+  font-weight: 700;
+  max-width: 60%;
+}
+.banner p {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  opacity: 0.92;
+  max-width: 58%;
+}
+.banner .cta {
+  background: #fff;
+  color: var(--gd);
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 16px;
+}
+.banner .art {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.5rem;
+  font-size: 4.4rem;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+.grid3 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.tile {
+  border-radius: 16px;
+  padding: 0.7rem 0.3rem 0.55rem;
+  text-align: center;
+  color: #33403a;
+  display: block;
+  flex: 0 0 calc(33.333% - 0.4rem);
+  transition: transform 0.12s;
+}
+.tile:active {
+  transform: scale(0.95);
+}
+.tile .em {
+  font-size: 2.1rem;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.tile span {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+.quick .qcard {
+  flex: 1 1 calc(50% - 0.3rem);
+  min-width: 0;
+}
+.qcard {
+  background: var(--gs);
+  border-radius: 14px;
+  padding: 0.7rem 0.8rem;
+  text-align: left;
+  color: var(--tx);
+}
+.qcard b {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--gd);
+}
+.qcard small {
+  font-size: 0.65rem;
+  color: var(--mu);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.link {
+  background: none;
+  color: var(--g);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0;
+}
+/* listing cards */
+/* ---------- listing / request cards ---------- */
+.item {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0.65rem;
+  margin-bottom: 0.65rem;
+}
+.thumb {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.imid {
+  flex: 1;
+  min-width: 0;
+}
+.imid b {
+  font-size: 0.88rem;
+  display: block;
+}
+.imid small {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--mu);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.imid .meta {
+  font-size: 0.7rem;
+  margin-top: 0.15rem;
+  color: var(--tx);
+}
+.imid .meta em {
+  font-style: normal;
+  color: var(--g);
+  font-weight: 700;
+}
+.acts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+}
+.cbtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--g);
+  border: 1.5px solid var(--g);
+  font-size: 0.85rem;
+}
+.pbtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--g);
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.pill {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.18rem 0.55rem;
+  border-radius: 10px;
+  background: var(--gs);
+  color: var(--gd);
+  white-space: nowrap;
+}
+.pill.amb {
+  background: #fff1d6;
+  color: #8a5a00;
+}
+.pill.gry {
+  background: var(--soft);
+  color: var(--mu);
+}
+.obtn {
+  background: var(--g);
+  color: #fff;
+  border-radius: 14px;
+  padding: 0.38rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.card.empty {
+  text-align: center;
+  color: var(--mu);
+  font-size: 0.8rem;
+}
+.card.empty .btn {
+  width: auto;
+  margin-top: 0.7rem;
+  padding: 0.55rem 1.1rem;
+}
+
+/* market controls */
+/* ---------- market filters ---------- */
+.chips {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.1rem 0 0.7rem;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  white-space: nowrap;
+  background: var(--soft);
+  color: var(--tx);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: 18px;
+  border: 1.5px solid transparent;
+}
+.chip.on {
+  background: var(--gs);
+  color: var(--gd);
+  border-color: var(--g);
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--soft);
+  border-radius: 14px;
+  padding: 0 0.8rem;
+  margin-bottom: 0.7rem;
+}
+.search input {
+  border: none;
+  background: none;
+  padding: 0.7rem 0;
+}
+.search input:focus {
+  outline: none;
+}
+.catfab-wrap {
+  position: fixed;
+  bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--w));
+  padding: 0 1rem;
+  pointer-events: none;
+  z-index: 15;
+  display: none;
+}
+.catfab {
+  pointer-events: auto;
+  background: #17211a;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 22px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+/* bottom nav */
+/* ---------- bottom menu ---------- */
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--w));
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0.45rem 0.3rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+}
+nav button {
+  background: none;
+  color: var(--mu);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  min-width: 58px;
+}
+nav button .ic {
+  font-size: 1.25rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+nav button.on {
+  color: var(--g);
+}
+nav button.on .ic {
+  filter: none;
+  opacity: 1;
+}
+nav .fab {
+  background: var(--g);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 1.7rem;
+  margin-top: -22px;
+  box-shadow: 0 6px 14px rgba(31, 165, 71, 0.45);
+  min-width: 52px;
+  justify-content: center;
+}
+nav .fab .ic {
+  filter: none;
+  opacity: 1;
+  font-size: 1.6rem;
+}
+/* cards, stats */
+/* ---------- cards, buttons, stats ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+.btn {
+  background: var(--g);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  width: 100%;
+  margin-top: 0.9rem;
+}
+.btn.ghost {
+  background: var(--gs);
+  color: var(--gd);
+}
+.btn.sm {
+  width: auto;
+  margin: 0;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.72rem;
+  border-radius: 12px;
+}
+.stats {
+  display: flex;
+  gap: 0.5rem;
+}
+.stat {
+  flex: 1;
+  min-width: 0;
+  background: var(--gs);
+  border-radius: 12px;
+  padding: 0.6rem 0.3rem;
+  text-align: center;
+}
+.stat b {
+  display: block;
+  font-size: 1rem;
+  color: var(--gd);
+}
+.stat small {
+  font-size: 0.6rem;
+  color: var(--mu);
+}
+
+.g2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.g2 > * {
+  flex: 1 1 calc(50% - 0.3rem);
+  min-width: 0;
+}
+.prev {
+  display: none;
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+.note {
+  background: var(--gs);
+  border-left: 3px solid var(--g);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.72rem;
+  margin-top: 0.6rem;
+}
+/* matches */
+/* ---------- AI buyer ranking ---------- */
+.mrow {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+.mrow .net {
+  margin-left: auto;
+  text-align: right;
+}
+.mrow .net b {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--g);
+}
+.mrow .net small {
+  font-size: 0.62rem;
+  color: var(--mu);
+}
+.mdet {
+  font-size: 0.68rem;
+  color: var(--mu);
+  margin: 0.4rem 0 0.5rem;
+}
+/* orders */
+/* ---------- orders and tracking ---------- */
+.otop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+.otop b {
+  font-size: 0.92rem;
+}
+.stp {
+  display: flex;
+  margin: 0.7rem 0 0.4rem;
+}
+.s {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  font-size: 0.56rem;
+  color: var(--mu);
+}
+.s i {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  margin: 0 auto 0.25rem;
+  border-radius: 50%;
+  background: var(--line);
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+.s.d i {
+  background: var(--g);
+  color: #fff;
+}
+.s.c i {
+  background: var(--amber);
+  color: #3a2800;
+}
+.s:before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+}
+.s.d:before {
+  background: var(--g);
+}
+.s:first-child:before {
+  display: none;
+}
+.route {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  margin: 0.6rem 0 0.2rem;
+}
+.route .pt {
+  max-width: 30%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bar {
+  flex: 1;
+  height: 6px;
+  background: var(--line);
+  border-radius: 4px;
+  position: relative;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  background: var(--g);
+  border-radius: 4px;
+  transition: width 0.35s;
+}
+.bar em {
+  position: absolute;
+  top: -11px;
+  transform: translateX(-50%);
+  font-style: normal;
+  font-size: 1rem;
+  transition: left 0.35s;
+}
+.pp {
+  border: 2px dashed var(--g);
+  border-radius: 12px;
+  padding: 0.6rem 0.7rem;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+}
+.pp div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.22rem 0;
+  border-bottom: 1px dotted var(--line);
+}
+.pp div:last-child {
+  border: none;
+}
+.pp span:first-child {
+  color: var(--mu);
+}
+.stars {
+  display: flex;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+}
+.stars span {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--line);
+}
+.stars span.on {
+  color: var(--amber);
+}
+/* dashboard / uses */
+/* ---------- dashboard and uses ---------- */
+.hb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  margin: 0.45rem 0;
+}
+.hb span {
+  width: 84px;
+  color: var(--mu);
+}
+.hb div {
+  flex: 1;
+  height: 10px;
+  background: var(--soft);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.hb i {
+  display: block;
+  height: 100%;
+  background: var(--g);
+  border-radius: 6px;
+}
+.vb {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  height: 110px;
+  margin-top: 0.6rem;
+}
+.vb div {
+  flex: 1;
+  text-align: center;
+  font-size: 0.58rem;
+  color: var(--mu);
+}
+.vb i {
+  display: block;
+  background: var(--amber);
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0.2rem;
+}
+.ucard {
+  border-radius: 16px;
+  padding: 0.8rem;
+  text-align: center;
+  color: #33403a;
+}
+.ucard .em {
+  font-size: 1.8rem;
+}
+.ucard b {
+  display: block;
+  font-size: 0.8rem;
+  margin: 0.25rem 0;
+}
+.ucard p {
+  font-size: 0.66rem;
+  margin: 0;
+  opacity: 0.85;
+}
+/* chat */
+/* ---------- AI chat ---------- */
+.chat {
+  height: 300px;
+  overflow-y: auto;
+  background: var(--soft);
+  border-radius: 14px;
+  padding: 0.7rem;
+  margin-bottom: 0.6rem;
+}
+.msg {
+  max-width: 85%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 14px;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.msg.u {
+  background: var(--g);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 3px;
+}
+.msg.a {
+  background: var(--card);
+  border: 1px solid var(--line);
+  margin-right: auto;
+  border-bottom-left-radius: 3px;
+}
+.ask {
+  display: flex;
+  gap: 0.5rem;
+}
+.ask input {
+  flex: 1;
+}
+/* sheet + toast */
+/* ---------- popup (sheet) and toast ---------- */
+.sbg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 50;
+  display: none;
+}
+.sbg.on {
+  display: block;
+}
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--w));
+  max-height: 82vh;
+  overflow-y: auto;
+  background: var(--bg);
+  border-radius: 22px 22px 0 0;
+  padding: 1rem 1rem calc(1.2rem + env(safe-area-inset-bottom, 0px));
+  animation: up 0.25s ease;
+}
+@keyframes up {
+  from {
+    transform: translate(-50%, 40px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+.sheet h4 {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+}
+.grab {
+  width: 40px;
+  height: 4px;
+  background: var(--line);
+  border-radius: 3px;
+  margin: 0 auto 0.8rem;
+}
+.ni {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.78rem;
+}
+.ni small {
+  display: block;
+  color: var(--mu);
+  font-size: 0.64rem;
+  margin-top: 0.15rem;
+}
+#toasts {
+  position: fixed;
+  top: calc(64px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 400px);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+.toast {
+  background: #17211a;
+  color: #fff;
+  padding: 0.65rem 0.9rem;
+  border-radius: 14px;
+  font-size: 0.76rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  animation: in 0.2s ease;
+  border-left: 4px solid var(--g);
+}
+.empty {
+  text-align: center;
+  color: var(--mu);
+  font-size: 0.8rem;
+  padding: 2rem 0;
+}
+.foot {
+  text-align: center;
+  font-size: 0.62rem;
+  color: var(--mu);
+  padding: 0.5rem 0 1rem;
+}
+/* ---------- responsive (flex) : phone -> tablet -> website ---------- */
+/* ---------- responsive layout (flexbox): phone -> tablet -> website ---------- */
+.brand {
+  display: none;
+}
+.dsk {
+  display: none !important;
+}
+nav .fab .lb {
+  display: none;
+}
+.flist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 0.8rem;
+}
+.flist .item,
+.flist .card {
+  margin: 0;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.flist .empty {
+  flex: 1 1 100%;
+}
+.row2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.row2 .card {
+  flex: 1 1 300px;
+  margin: 0;
+}
+.fl {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+.api {
+  font-size: 0.6rem;
+  color: var(--mu);
+  margin-top: 0.55rem;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  word-break: break-word;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0.4rem 0 0.2rem;
+}
+.tags span {
+  background: var(--gs);
+  color: var(--gd);
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+}
+
+
+#roleSeg{display:none!important}
+@media (min-width:640px){body{background:#EEF2EE;} .app{box-shadow:0 10px 40px rgba(0,0,0,.16);}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><span>🌾</span> AI Crop-Waste Exchange</div>
+    <button class="back" id="backBtn" data-act="go" data-s="home">‹</button>
+    <button class="loc" data-act="loc"><span class="pin">📍</span><div><b>Home ▾</b><small id="locText"></small></div></button>
+    <div class="top-r">
+      <div class="seg" id="roleSeg"><button data-act="role" data-r="farmer" class="on">Farmer</button><button data-act="role" data-r="buyer">Buyer</button></div>
+      <button class="obtn" id="installBtn" style="display:none">Install</button><button class="round" data-act="bell">🔔<i id="bellCount"></i></button>
+    </div>
+  </header>
+
+  <section class="screen on" id="home"></section>
+
+  <section class="screen" id="market">
+    <div class="row"><h3 id="mtitle" style="margin:0"></h3><span id="mpost"></span></div>
+    <p class="hi" id="msub" style="margin:.2rem 0 .7rem"></p>
+    <div class="search">🔍<input id="mq" placeholder=""></div>
+    <div class="chips" id="mchips"></div>
+    <div class="row" style="margin-bottom:.6rem"><span class="hi" style="margin:0" id="mcount"></span>
+      <select id="msort" style="width:auto;padding:.4rem .6rem;font-size:.72rem"></select></div>
+    <div id="mlist" class="flist"></div>
+  </section>
+
+  <section class="screen" id="sell">
+    <h3>List your crop waste</h3>
+    <div class="card">
+      <label>Crop residue type</label>
+      <select id="fCrop"></select>
+      <div class="g2">
+        <div><label>Quantity (tonnes)</label><input type="number" id="fQty" value="4" min="0.5" step="0.5"></div>
+        <div><label>Farmer name</label><input id="fName" value="Demo Farmer"></div>
+        <div><label>State</label><select id="fState"></select></div>
+        <div><label>City / village</label><input id="fCity"></div>
+      </div>
+      <div class="note" id="fNote"></div>
+      <label>Photo of residue</label>
+      <input type="file" id="fPhoto" accept="image/*">
+      <img class="prev" id="fPrev" alt="preview">
+      <button class="btn" data-act="analyze">✨ Analyze with AI</button>
+    </div>
+    <div id="sellOut"></div>
+  </section>
+
+  <section class="screen" id="orders"></section>
+
+  <section class="screen" id="ai">
+    <h3>🤖 Ask the AI assistant</h3>
+    <div class="chips" id="aiChips"></div>
+    <div class="chat" id="chat"></div>
+    <div class="ask"><input id="aq" placeholder="e.g. What is the use of this product?"><button class="btn sm" data-act="send">Send</button></div>
+  </section>
+
+  <section class="screen" id="dash"></section>
+
+  <section class="screen" id="uses">
+    <h3>What is crop residue used for?</h3>
+    <div class="g2" id="useGrid"></div>
+    <h3>Typical use by state</h3>
+    <select id="uState"></select>
+    <div class="note" id="uNote"></div>
+  </section>
+
+  <section class="screen" id="food">
+    <h3>🍽️ Food &amp; drink upcycling</h3>
+    <p class="hi">Clean, food-grade by-products (not straw or husk) can become recipes and drinks. Pick one:</p>
+    <div class="chips" id="fChips"></div>
+    <div id="fOut"></div>
+  </section>
+
+  <div class="catfab-wrap" id="catWrap"><button class="catfab" data-act="cats">☰ Category</button></div>
+  <nav id="nav"></nav>
+</div>
+<div class="sbg" id="sbg"><div class="sheet" id="sheet"></div></div>
+<div id="toasts"></div>
+<script>window.APP_ROLE='farmer';</script>
+<script>
+// data.js
+// All the fixed data of the app (states, crops, uses, buyer types) + small helper functions.
+// Everything here is demo data. The numbers (prices etc.) are only for demonstration.
+
+// short name for document.querySelector
+const $ = (s) => document.querySelector(s);
+// shows a number as rupees, e.g. 3200 -> ₹3,200
+const inr = (n) => "₹" + Math.round(n).toLocaleString("en-IN");
+
+// ---------- Reference data ----------
+// state name -> lat/lng of the capital (for distance) + what the crop waste is mostly used for there
+const STATES = {
+  Odisha: {
+    lat: 20.27,
+    lng: 85.84,
+    use: "Widely used as cattle fodder and as a growing substrate for mushroom cultivation.",
+  },
+  Punjab: {
+    lat: 31.63,
+    lng: 74.87,
+    use: "Large paddy-wheat surplus makes it a major feedstock hub for biomass power plants.",
+  },
+  Haryana: {
+    lat: 29.06,
+    lng: 76.09,
+    use: "Commonly supplied to biomass co-firing power plants and paper mills.",
+  },
+  Bihar: {
+    lat: 25.61,
+    lng: 85.14,
+    use: "Traditionally used as cattle fodder and for thatching rural rooftops.",
+  },
+  "Uttar Pradesh": {
+    lat: 26.85,
+    lng: 80.95,
+    use: "Sugar-mill belt; residue supports bagasse-based cogeneration.",
+  },
+  Maharashtra: {
+    lat: 19.08,
+    lng: 72.88,
+    use: "Used in sugar-mill biomass cogeneration and vermi-compost units.",
+  },
+  "Madhya Pradesh": {
+    lat: 23.26,
+    lng: 77.41,
+    use: "Often processed into compressed biomass fuel pellets and briquettes.",
+  },
+  Karnataka: {
+    lat: 12.97,
+    lng: 77.59,
+    use: "Popular as mushroom-farming substrate and for organic compost.",
+  },
+  "Tamil Nadu": {
+    lat: 13.08,
+    lng: 80.27,
+    use: "Used in paper-pulp mills and biogas plants near dairy clusters.",
+  },
+  "West Bengal": {
+    lat: 22.57,
+    lng: 88.36,
+    use: "Common in jute-paper mills and household biogas digesters.",
+  },
+  Gujarat: {
+    lat: 23.03,
+    lng: 72.58,
+    use: "Increasingly used in eco-friendly straw-board construction panels.",
+  },
+  Rajasthan: {
+    lat: 26.91,
+    lng: 75.79,
+    use: "Used as cattle fodder and for low-cost mud-straw house insulation.",
+  },
+  Assam: { lat: 26.14, lng: 91.73, use: "Traditionally used for thatched roofing and handicraft material." },
+  Kerala: { lat: 8.52, lng: 76.94, use: "Used in coir-composite boards and organic-farming compost." },
+  Telangana: {
+    lat: 17.38,
+    lng: 78.49,
+    use: "Growing use in biomass gasification units and fuel briquetting.",
+  },
+};
+// crop residue types: emoji, base price in rupees per tonne, tile colour
+const CROPS = {
+  "Rice Straw": { e: "🌾", p: 3200, bg: "#DDF0DA" },
+  "Wheat Straw": { e: "🌿", p: 2800, bg: "#FDE9E0" },
+  "Corn Stalks": { e: "🌽", p: 2400, bg: "#FBEFCB" },
+  Husk: { e: "🌰", p: 1800, bg: "#D9F0EA" },
+};
+// the 6 uses of crop waste. 'k' = keywords which the AI chat looks for in the question
+const USES = [
+  {
+    id: "feed",
+    e: "🐄",
+    t: "Animal Feed",
+    s: "Animal Feed",
+    bg: "#FDEBCB",
+    k: ["animal", "cattle", "feed", "eat", "fodder", "cow", "buffalo", "goat"],
+    x: "Rice and wheat straw are a low-cost roughage feed for cattle, buffalo and goats after basic treatment.",
+  },
+  {
+    id: "build",
+    e: "🏠",
+    t: "Eco-Friendly Construction",
+    s: "Eco-Build",
+    bg: "#E7DDF5",
+    k: ["house", "home", "construction", "build", "wall", "roof", "brick"],
+    x: "Compressed straw bales and straw-board panels are used as insulation and wall material in low-cost eco-friendly housing.",
+  },
+  {
+    id: "fuel",
+    e: "🔥",
+    t: "Biomass Fuel",
+    s: "Biomass Fuel",
+    bg: "#DDEBF8",
+    k: ["fuel", "biomass", "energy", "power", "burn", "pellet"],
+    x: "Dried residue is compressed into pellets or briquettes and used in power plants as a coal alternative.",
+  },
+  {
+    id: "compost",
+    e: "🌱",
+    t: "Compost & Fertiliser",
+    s: "Compost",
+    bg: "#F9DDE6",
+    k: ["compost", "fertiliser", "fertilizer", "soil", "manure"],
+    x: "Decomposed residue enriches soil as organic compost and reduces dependence on chemical fertiliser.",
+  },
+  {
+    id: "mush",
+    e: "🍄",
+    t: "Mushroom Cultivation",
+    s: "Mushroom",
+    bg: "#FCE9D2",
+    k: ["mushroom", "fungus"],
+    x: "Straw is a popular growing substrate for oyster and button mushroom farming.",
+  },
+  {
+    id: "gas",
+    e: "💨",
+    t: "Biogas Feedstock",
+    s: "Biogas",
+    bg: "#E0F1EC",
+    k: ["biogas", "gas", "cooking"],
+    x: "Residue can be fed into biogas digesters along with cattle dung to make clean cooking gas.",
+  },
+];
+// types of buyers used for the ranking. f = fraction of the base price they pay, h = handling cost
+const BUYERS = [
+  { type: "Animal Feed Buyer", e: "🐄", f: 1.0, h: 300, pick: "Today", pr: 0 },
+  { type: "Biomass Fuel Buyer", e: "🔥", f: 0.82, h: 250, pick: "In 2 days", pr: 1 },
+  { type: "Compost Producer", e: "🌱", f: 0.56, h: 200, pick: "Today", pr: 0 },
+];
+const GOALS = {
+  profit: "Max Profit",
+  distance: "Min Distance",
+  pickup: "Fastest Pickup",
+  price: "Best Price",
+  local: "Sustainable / Local",
+};
+const STAGES = ["Placed", "Confirmed", "Pickup", "Picked up", "Paid"];
+
+// ---------- Helpers ----------
+// turns a text into a number. We use it so the distance between the same two cities
+// is always the same (otherwise it changes on every refresh)
+function hash(s) {
+  let h = 7;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h;
+}
+// distance in km between two places.
+// Different states -> haversine formula using lat/lng of the state capital.
+// Same state -> small number made from the city names (we dont have city coordinates)
+function distKm(s1, c1, s2, c2) {
+  c1 = (c1 || "").toLowerCase();
+  c2 = (c2 || "").toLowerCase();
+  if (s1 === s2) return c1 === c2 ? 6 : 12 + (hash(c1 + "|" + c2) % 34);
+  const a = STATES[s1],
+    b = STATES[s2],
+    R = 6371,
+    r = (d) => (d * Math.PI) / 180;
+  const x =
+    Math.sin(r(b.lat - a.lat) / 2) ** 2 +
+    Math.cos(r(a.lat)) * Math.cos(r(b.lat)) * Math.sin(r(b.lng - a.lng) / 2) ** 2;
+  return Math.round(2 * R * Math.asin(Math.sqrt(x)));
+}
+// makes the <option> list of all states for the dropdowns
+const stateOpts = () =>
+  Object.keys(STATES)
+    .map((s) => `<option>${s}</option>`)
+    .join("");
+
+// ---------- App state ----------
+const S = {
+  role: window.APP_ROLE || "farmer",
+  screen: "home",
+  state: "Odisha",
+  city: "Bhubaneswar",
+  name: "Demo Farmer",
+  filter: "",
+  mine: false,
+  q: "",
+  sort: "distance",
+  goal: "profit",
+  photo: null,
+  batch: null,
+  matches: [],
+};
+let listings = [],
+  orders = [],
+  notifs = [],
+  seen = { farmer: 0, buyer: 0 },
+  lid = 2000,
+  oid = 1000;
+const SUF = window.APP_ROLE ? window.APP_ROLE[0].toUpperCase() : ""; // keeps ids unique across the two apps
+const knownN = new Set();
+if (window.APP_ROLE === "buyer") {
+  S.city = "Cuttack";
+}
+[
+  ["Rice Straw", 5, "Odisha", "Cuttack", "Ramesh Sahu", 3100, 82],
+  ["Wheat Straw", 3, "Bihar", "Patna", "Suresh Yadav", 2700, 78],
+  ["Corn Stalks", 6, "Maharashtra", "Nashik", "Ganesh Patil", 2300, 85],
+  ["Husk", 2, "Haryana", "Karnal", "Baljeet Singh", 1750, 74],
+  ["Rice Straw", 4, "Odisha", "Bhubaneswar", "Sunita Behera", 3050, 88],
+].forEach(([crop, qty, state, city, farmer, price, quality]) =>
+  listings.push({
+    id: "L" + ++lid,
+    crop,
+    qty,
+    state,
+    city,
+    farmer,
+    price,
+    quality,
+    status: "Available",
+    mine: false,
+  }),
+);
+
+// demand.js
+// Buyer requests ("demand board"). Farmer sees these and can offer his batch.
+
+// ---------- Buyer demand board (what buyers want) ----------
+const KINDS = {
+  feed: { e: "🐄", bg: "#FDEBCB", t: "Animal-feed unit" },
+  fuel: { e: "🔥", bg: "#DDEBF8", t: "Biomass plant" },
+  compost: { e: "🌱", bg: "#F9DDE6", t: "Compost producer" },
+  mush: { e: "🍄", bg: "#FCE9D2", t: "Mushroom farm" },
+  build: { e: "🏠", bg: "#E7DDF5", t: "Eco-build panels" },
+};
+let demand = [],
+  did = 3000;
+S.bname = "Ramesh Traders";
+[
+  ["Konark Cattle Feeds", "feed", "Rice Straw", 8, 3300, "Odisha", "Cuttack"],
+  ["Eastern Bio-Power", "fuel", "Rice Straw", 20, 2700, "Odisha", "Jharsuguda"],
+  ["GreenLeaf Compost Co.", "compost", "Wheat Straw", 6, 2100, "Bihar", "Patna"],
+  ["Sahyadri Mushroom Farm", "mush", "Wheat Straw", 3, 2900, "Maharashtra", "Nashik"],
+  ["Karnal Pellet Works", "fuel", "Corn Stalks", 12, 2600, "Haryana", "Karnal"],
+  ["AgroBoard Panels", "build", "Rice Straw", 10, 2500, "Gujarat", "Ahmedabad"],
+  ["Cauvery Compost Works", "compost", "Husk", 5, 1700, "Karnataka", "Mysuru"],
+].forEach(([buyer, kind, crop, qty, price, state, city]) =>
+  demand.push({
+    id: "D" + ++did,
+    buyer,
+    kind,
+    crop,
+    qty,
+    price,
+    state,
+    city,
+    status: "Open",
+    mine: false,
+    filled: 0,
+  }),
+);
+const openDemand = () => demand.filter((d) => d.status === "Open");
+const dDist = (d) => distKm(S.state, S.city, d.state, d.city);
+// finds a batch of the farmer which matches what the buyer wants (same crop, still available)
+function myBatchFor(d) {
+  const c = listings.filter((l) => l.mine && l.status === "Available" && l.crop === d.crop);
+  return c.find((l) => l.qty <= d.qty) || c[0] || null;
+}
+// how much the farmer will earn = price x tonnes - transport - 250 handling
+// transport = distance x 45 (rupees per km, rough rate)
+function offerCalc(d, l) {
+  const q = Math.min(l.qty, d.qty),
+    dist = dDist(d),
+    tr = Math.round(dist * 45 * (0.9 + q * 0.05));
+  return { q, dist, tr, net: Math.round(d.price * q) - tr - 250 };
+}
+// html card of ONE buyer request (this is shown in the farmer app)
+function demandCard(d) {
+  const k = KINDS[d.kind],
+    l = myBatchFor(d),
+    c = l ? offerCalc(d, l) : null;
+  return `<div class="item" data-act="ddetail" data-id="${d.id}">
+    <div class="thumb" style="background:${k.bg}">${k.e}</div>
+    <div class="imid"><b>${esc(d.buyer)}</b><small>${k.t} · ${esc(d.city)}, ${d.state}</small>
+      <div class="meta">Needs <em>${d.qty} t ${d.crop}</em> · ${inr(d.price)}/t · ${dDist(d)} km</div>
+      <div class="meta" style="color:var(--mu)">${c ? `Your ${c.q} t would net <em>${inr(c.net)}</em>` : `List a ${d.crop.toLowerCase()} batch to sell here`}</div></div>
+    <div class="acts"><button class="cbtn" data-act="dcall" data-id="${d.id}" aria-label="Call buyer">📞</button><button class="obtn" data-act="offer" data-id="${d.id}">Offer</button></div></div>`;
+}
+// html card of the buyer's OWN requirement (shown in the buyer app)
+function reqCard(d) {
+  const k = KINDS[d.kind];
+  return `<div class="item"><div class="thumb" style="background:${k.bg}">${k.e}</div>
+    <div class="imid"><b>${d.crop} · ${d.qty} t open</b><small>${k.t} · ${esc(d.city)}, ${d.state}</small>
+      <div class="meta"><em>${inr(d.price)}/t</em> · ${d.filled ? d.filled + " t already offered" : "waiting for farmers"}</div></div>
+    <div class="acts"><span class="pill ${d.status === "Open" ? "" : "gry"}">${d.status}</span></div></div>`;
+}
+// farmer offers his batch to a buyer -> creates an order.
+// If the batch is bigger than the need, only the needed tonnes are sold and the rest stays listed.
+function offer(id) {
+  const d = demand.find((x) => x.id === id);
+  if (!d || d.status !== "Open") return;
+  closeSheet();
+  const l = myBatchFor(d);
+  if (!l) {
+    S.pre = d.crop;
+    go("sell");
+    toast(`List your ${d.crop.toLowerCase()} first — ${d.buyer} needs ${d.qty} t`);
+    return;
+  }
+  const c = offerCalc(d, l),
+    partial = l.qty > d.qty;
+  d.qty = +(d.qty - c.q).toFixed(2);
+  d.filled = (d.filled || 0) + c.q;
+  if (d.qty <= 0) d.status = "Filled";
+  if (partial) l.qty = +(l.qty - c.q).toFixed(2);
+  createOrder({
+    listingId: l.id,
+    partial,
+    crop: l.crop,
+    qty: c.q,
+    farmer: l.farmer,
+    city: l.city + ", " + l.state,
+    price: d.price,
+    net: c.net,
+    dist: c.dist,
+    by: "farmer",
+    buyer: d.buyer,
+    destCity: d.city,
+    destState: d.state,
+  });
+}
+// popup form where the buyer writes what he needs
+function postReqSheet() {
+  sheet(`<h4>📝 Post a requirement</h4><p class="hi">Farmers near you will be notified and can offer their batch.</p>
+    <label>Business name</label><input id="rName" value="${esc(S.bname)}">
+    <div class="g2"><div><label>Crop residue needed</label><select id="rCrop">${Object.keys(CROPS)
+      .map((c) => `<option>${c}</option>`)
+      .join("")}</select></div>
+    <div><label>Quantity (tonnes)</label><input type="number" id="rQty" value="5" min="0.5" step="0.5"></div>
+    <div><label>Offer price (₹ / tonne)</label><input type="number" id="rPrice" value="${CROPS["Rice Straw"].p}" step="50"></div>
+    <div><label>You will use it for</label><select id="rKind">${Object.entries(KINDS)
+      .map(([k, v]) => `<option value="${k}">${v.t}</option>`)
+      .join("")}</select></div></div>
+    <div class="note">Delivery location: ${esc(S.city)}, ${S.state} (change it from the location pill)</div>
+    <button class="btn" data-act="savereq">Post requirement</button>`);
+}
+document.addEventListener("change", (e) => {
+  if (e.target.id === "rCrop") $("#rPrice").value = CROPS[e.target.value].p;
+});
+// saves the popup form as a new requirement and tells the farmers about it
+function saveReq() {
+  const crop = $("#rCrop").value,
+    qty = parseFloat($("#rQty").value) || 1,
+    price = parseInt($("#rPrice").value) || CROPS[crop].p,
+    kind = $("#rKind").value,
+    buyer = ($("#rName").value || "").trim() || S.bname;
+  S.bname = buyer;
+  demand.unshift({
+    id: "D" + ++did + SUF,
+    buyer,
+    kind,
+    crop,
+    qty,
+    price,
+    state: S.state,
+    city: S.city,
+    status: "Open",
+    mine: true,
+    filled: 0,
+  });
+  closeSheet();
+  notify("buyer", `Requirement posted: ${qty} t ${crop} at ${inr(price)}/t.`);
+  notify("farmer", `New buyer near ${S.city}: ${buyer} needs ${qty} t ${crop} at ${inr(price)}/t.`);
+  go("home");
+}
+
+// app.js
+// Main part of the app: popups, navigation, home, market, sell, orders, dashboard, AI chat and the click handler.
+
+// ---------- UI primitives ----------
+// small message that comes on top of the screen for 3 seconds
+function toast(t) {
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = t;
+  $("#toasts").appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = "0";
+    el.style.transition = "opacity .3s";
+    setTimeout(() => el.remove(), 300);
+  }, 3200);
+}
+// opens the bottom popup (called "sheet") with the given html
+function sheet(html) {
+  $("#sheet").innerHTML = '<div class="grab"></div>' + html;
+  $("#sbg").classList.add("on");
+}
+// closes the popup
+function closeSheet() {
+  $("#sbg").classList.remove("on");
+}
+$("#sbg").addEventListener("click", (e) => {
+  if (e.target.id === "sbg") closeSheet();
+});
+
+// adds a notification. aud = who should get it: 'farmer', 'buyer' or 'both'.
+// Toast is shown only if it is for the user who is using the app right now.
+function notify(aud, text) {
+  const n = {
+    nid: (SUF || "W") + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    aud,
+    text,
+    time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
+  };
+  notifs.unshift(n);
+  knownN.add(n.nid);
+  if (aud === "both" || aud === S.role)
+    toast(`<b>${aud === "both" ? "Update" : aud === "farmer" ? "Farmer" : "Buyer"}:</b> ${text}`);
+  updateBell();
+  syncSoon();
+}
+const relevant = () => notifs.filter((n) => n.aud === "both" || n.aud === S.role);
+// red number on the bell icon = notifications not seen yet
+function updateBell() {
+  const n = relevant().length - seen[S.role];
+  const el = $("#bellCount");
+  el.style.display = n > 0 ? "flex" : "none";
+  el.textContent = n;
+}
+
+// ---------- Navigation ----------
+// makes the bottom menu. Farmer gets a Sell button, buyer gets a Post button.
+// The items marked 1 are only for the desktop sidebar.
+function buildNav() {
+  const f = S.role === "farmer";
+  const items = [
+    ["home", "🏠", "Home"],
+    ["market", f ? "🤝" : "🛒", f ? "Buyers" : "Market"],
+    [f ? "sell" : "post", "＋", f ? "Sell" : "Post"],
+    ["orders", "📦", "Orders"],
+    ["ai", "🤖", "Assistant"],
+    ["dash", "📊", "Dashboard", 1],
+    ["uses", "📚", "Uses & Info", 1],
+    ["food", "🍽️", "Food & Drink", 1],
+  ];
+  $("#nav").innerHTML = items
+    .map(([id, ic, lb, dk]) =>
+      id === "sell" || id === "post"
+        ? `<button class="fab" data-act="${f ? "go" : "postreq"}" ${f ? 'data-s="sell"' : ""}><span class="ic">${ic}</span><span class="lb">${f ? "Sell crop waste" : "Post requirement"}</span></button>`
+        : `<button class="${dk ? "dsk" : ""}" data-act="go" data-s="${id}" data-nav="${id}"><span class="ic">${ic}</span>${lb}</button>`,
+    )
+    .join("");
+}
+// opens a screen (home, market, orders ...) and draws it
+function go(s) {
+  S.screen = s;
+  document.querySelectorAll(".screen").forEach((x) => x.classList.toggle("on", x.id === s));
+  document.querySelectorAll("#nav [data-nav]").forEach((b) => b.classList.toggle("on", b.dataset.nav === s));
+  const sub = s === "dash" || s === "uses" || s === "food";
+  $("#backBtn").style.display = sub ? "block" : "none";
+  $("#catWrap").style.display = s === "market" ? "block" : "none";
+  if (s === "home") renderHome();
+  if (s === "market") renderMarket();
+  if (s === "orders") renderOrders();
+  if (s === "dash") renderDash();
+  if (s === "sell") initSell();
+  if (s === "food") renderFood();
+  window.scrollTo(0, 0);
+}
+// switch between farmer and buyer (only works in the website, the apps have a fixed role)
+function setRole(r) {
+  if (window.APP_ROLE && r !== window.APP_ROLE) return;
+  S.role = r;
+  document.querySelectorAll("#roleSeg button").forEach((b) => b.classList.toggle("on", b.dataset.r === r));
+  S.mine = false;
+  buildNav();
+  updateBell();
+  go("home");
+}
+// shows the current city and state in the top left
+function locText() {
+  $("#locText").textContent = S.city + ", " + S.state;
+}
+
+// ---------- Home ----------
+// html card of ONE batch listed by a farmer
+function listingCard(l) {
+  const c = CROPS[l.crop],
+    d = distKm(S.state, S.city, l.state, l.city),
+    own = l.mine && S.role === "farmer";
+  const thumb = l.photo ? `<img src="${l.photo}" alt="">` : c.e;
+  let acts;
+  if (own) acts = `<span class="pill ${l.status === "Available" ? "" : "gry"}">${l.status}</span>`;
+  else
+    acts =
+      `<button class="cbtn" data-act="call" data-id="${l.id}" aria-label="Call">📞</button>` +
+      (S.role === "buyer" && l.status === "Available"
+        ? `<button class="pbtn" data-act="req" data-id="${l.id}" aria-label="Request order">+</button>`
+        : "");
+  return `<div class="item" data-act="detail" data-id="${l.id}">
+    <div class="thumb" style="background:${c.bg}">${thumb}</div>
+    <div class="imid"><b>${l.crop}</b><small>${own ? "You" : l.farmer} · ${l.city}, ${l.state}</small>
+      <div class="meta"><em>${inr(l.price)}/t</em> · ${l.qty} t · ${d} km · Q${l.quality}</div></div>
+    <div class="acts">${acts}</div></div>`;
+}
+// the part of the home screen that is different for farmer and buyer:
+// farmer -> buyers near him + his batches, buyer -> his requirements + new listings
+function roleSections(f) {
+  if (f) {
+    const dem = openDemand()
+        .sort((a, b) => dDist(a) - dDist(b))
+        .slice(0, 3),
+      mine = listings.filter((l) => l.mine);
+    return `<div class="row"><h3>Buyers near you</h3><button class="link" data-act="go" data-s="market">See all</button></div>
+      <p class="hi" style="margin-top:-.4rem">Who needs residue right now, and what they will pay</p>
+      <div class="flist">${dem.map(demandCard).join("") || '<div class="empty">No open buyer requests yet</div>'}</div>
+      <div class="row"><h3>Your batches</h3>${mine.length > 3 ? '<button class="link" data-act="mybatches">See all</button>' : ""}</div>
+      <div class="flist">${mine.slice(0, 3).map(listingCard).join("") || '<div class="card empty">You have not listed anything yet.<br><button class="btn" data-act="go" data-s="sell">List your first batch</button></div>'}</div>`;
+  }
+  const mineD = demand.filter((d) => d.mine),
+    near = listings
+      .filter((l) => l.status === "Available")
+      .sort((a, b) => distKm(S.state, S.city, a.state, a.city) - distKm(S.state, S.city, b.state, b.city))
+      .slice(0, 3);
+  return `<div class="row"><h3>Your requirements</h3><button class="link" data-act="postreq">+ Post new</button></div>
+    <div class="flist">${mineD.map(reqCard).join("") || '<div class="card empty">Tell farmers what you need and they will come to you.<br><button class="btn" data-act="postreq">Post a requirement</button></div>'}</div>
+    <div class="row"><h3>Fresh listings near you</h3><button class="link" data-act="go" data-s="market">See all</button></div>
+    <div class="flist">${near.map(listingCard).join("") || '<div class="empty">No listings yet</div>'}</div>`;
+}
+// draws the home screen
+function renderHome() {
+  const f = S.role === "farmer",
+    comp = orders.filter((o) => o.stage === 4);
+  const wallet = comp.reduce((s, o) => s + o.net, 0);
+  const tiles =
+    Object.entries(CROPS)
+      .map(
+        ([n, c]) =>
+          `<button class="tile" style="background:${c.bg}" data-act="crop" data-c="${n}"><span class="em">${c.e}</span><span>${n}</span></button>`,
+      )
+      .join("") +
+    USES.filter((u) => u.id !== "mush")
+      .map(
+        (u) =>
+          `<button class="tile" style="background:${u.bg}" data-act="use" data-u="${u.id}"><span class="em">${u.e}</span><span>${u.s}</span></button>`,
+      )
+      .join("");
+  $("#home").innerHTML = `
+    <p class="hi">${f ? "Namaste, " + S.name + " 👋" : "Hello, Buyer 👋"}</p>
+    <div class="banner"><span class="tag">UP TO ₹3,200 / TONNE</span>
+      <h2>${f ? "Crop waste = Cash" : "Fresh residue near you"}</h2>
+      <p>${f ? "AI finds the best buyer for your straw & husk" : "Verified listings with live distance & tracking"}</p>
+      <button class="cta" data-act="go" data-s="${f ? "sell" : "market"}">${f ? "Sell now" : "Browse now"}</button><span class="art">👩‍🌾</span></div>
+    <h3 style="margin-top:1.2rem">${f ? "What are you selling?" : "What are you looking for?"}</h3>
+    <div class="grid3">${tiles}</div>
+    <div class="quick">
+      <button class="qcard" data-act="go" data-s="dash"><b>${f ? inr(wallet) : orders.length}</b><small>${f ? "Wallet · see dashboard ›" : "Orders · see dashboard ›"}</small></button>
+      <button class="qcard" data-act="go" data-s="uses"><b>6 uses</b><small>Animal feed, houses & more ›</small></button>
+      <button class="qcard" data-act="go" data-s="food"><b>🍽️ Food & drink</b><small>Recipes, flavours & drinks from food-grade by-products ›</small></button>
+    </div>
+    ${roleSections(f)}
+    <div class="foot">${SYNC.ok ? "🔄 Live-synced with the " + (S.role === "farmer" ? "Buyer" : "Farmer") + " app · " : ""}🔒 Safe &amp; verified demo · all data simulated, no real payments</div>`;
+}
+
+// ---------- Market ----------
+// draws the market screen. Farmer sees the buyer demand board, buyer sees the farmer listings.
+function renderMarket() {
+  const f = S.role === "farmer";
+  $("#mtitle").textContent = f ? "Buyer demand board" : "Browse listings";
+  $("#msub").textContent = f
+    ? "Buyers who need crop residue right now — nearest first"
+    : "Fresh batches from farmers across India";
+  $("#mq").placeholder = f ? "Search buyer, crop, city…" : "Search straw, husk, city, farmer…";
+  $("#mpost").innerHTML = f ? "" : '<button class="btn sm" data-act="postreq">+ Post requirement</button>';
+  const sopts = f
+    ? [
+        ["distance", "Nearest first"],
+        ["price", "Best price"],
+        ["qty", "Biggest need"],
+      ]
+    : [
+        ["distance", "Nearest first"],
+        ["price", "Lowest price"],
+        ["qty", "Most quantity"],
+        ["quality", "Best quality"],
+      ];
+  if (!sopts.some((o) => o[0] === S.sort)) S.sort = "distance";
+  $("#msort").innerHTML = sopts
+    .map(([v, l]) => `<option value="${v}" ${S.sort === v ? "selected" : ""}>${l}</option>`)
+    .join("");
+  $("#mchips").innerHTML = ["All", ...Object.keys(CROPS)]
+    .map(
+      (c) =>
+        `<button class="chip ${(c === "All" ? !S.filter : S.filter === c) ? "on" : ""}" data-act="chip" data-c="${c}">${c}</button>`,
+    )
+    .join("");
+  const q = S.q.toLowerCase();
+  if (f) {
+    const list = openDemand().filter(
+      (d) =>
+        (!S.filter || d.crop === S.filter) &&
+        (!q || (d.buyer + d.crop + d.city + d.state).toLowerCase().includes(q)),
+    );
+    const sorts = {
+      distance: (a, b) => dDist(a) - dDist(b),
+      price: (a, b) => b.price - a.price,
+      qty: (a, b) => b.qty - a.qty,
+    };
+    list.sort(sorts[S.sort]);
+    $("#mcount").textContent = list.length + " open requests";
+    $("#mlist").innerHTML =
+      list.map(demandCard).join("") || '<div class="empty">No buyer requests match.</div>';
+  } else {
+    const list = listings.filter(
+      (l) =>
+        l.status === "Available" &&
+        (!S.filter || l.crop === S.filter) &&
+        (!q || (l.crop + l.city + l.state + l.farmer).toLowerCase().includes(q)),
+    );
+    const d = (l) => distKm(S.state, S.city, l.state, l.city);
+    const sorts = {
+      distance: (a, b) => d(a) - d(b),
+      price: (a, b) => a.price - b.price,
+      qty: (a, b) => b.qty - a.qty,
+      quality: (a, b) => b.quality - a.quality,
+    };
+    list.sort(sorts[S.sort]);
+    $("#mcount").textContent = list.length + " listings";
+    $("#mlist").innerHTML = list.map(listingCard).join("") || '<div class="empty">No listings match.</div>';
+  }
+}
+$("#mq").addEventListener("input", (e) => {
+  S.q = e.target.value;
+  renderMarket();
+});
+$("#msort").addEventListener("change", (e) => {
+  S.sort = e.target.value;
+  renderMarket();
+});
+
+// ---------- Sell + AI analysis ----------
+// fills the sell form (only first time) and sets city/state from the location
+function initSell() {
+  if (!$("#fCrop").options.length) {
+    $("#fCrop").innerHTML = Object.keys(CROPS)
+      .map((c) => `<option>${c}</option>`)
+      .join("");
+    $("#fState").innerHTML = stateOpts();
+    $("#fState").addEventListener("change", stateNote);
+    $("#fPhoto").addEventListener("change", (e) => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = (ev) => {
+        S.photo = ev.target.result;
+        $("#fPrev").src = S.photo;
+        $("#fPrev").style.display = "block";
+      };
+      r.readAsDataURL(f);
+    });
+  }
+  $("#fState").value = S.state;
+  $("#fCity").value = S.city;
+  stateNote();
+  if (S.pre) {
+    $("#fCrop").value = S.pre;
+    S.pre = null;
+  }
+}
+// shows what the selected state normally uses crop waste for
+function stateNote() {
+  $("#fNote").textContent = "In " + $("#fState").value + ": " + STATES[$("#fState").value].use;
+}
+// NOTE: this is NOT a real AI model. It only picks a quality score and a price near the base price using random numbers.
+// In the real version a CNN (transfer learning) will find the crop type from the photo and a model will predict the price.
+// Net return of each buyer = revenue - transport - handling.
+function analyze() {
+  const crop = $("#fCrop").value,
+    qty = parseFloat($("#fQty").value) || 1,
+    state = $("#fState").value,
+    city = $("#fCity").value || "Village",
+    farmer = $("#fName").value || "Farmer";
+  S.name = farmer;
+  S.state = state;
+  S.city = city;
+  locText();
+  const conf = (88 + Math.random() * 9).toFixed(1),
+    quality = Math.round(72 + Math.random() * 20),
+    price = Math.round(CROPS[crop].p * (0.92 + Math.random() * 0.12));
+  const l = {
+    id: "L" + ++lid + SUF,
+    crop,
+    qty,
+    state,
+    city,
+    farmer,
+    price,
+    quality,
+    status: "Available",
+    mine: true,
+    photo: S.photo,
+  };
+  listings.unshift(l);
+  notify("buyer", `New listing near ${city}: ${qty} t ${crop} from ${farmer} at ${inr(price)}/t.`);
+  S.batch = { ...l, conf, listingId: l.id };
+  S.matches = BUYERS.map((b) => {
+    const bp = Math.round(price * b.f),
+      rev = Math.round(bp * qty),
+      dist = Math.round(4 + Math.random() * 24),
+      tr = Math.round(dist * 45 * (0.9 + qty * 0.05));
+    return { ...b, bp, rev, dist, tr, net: rev - tr - b.h };
+  });
+  renderSellOut();
+}
+// shows the analyze result and the buyers ranked as per the goal chosen (profit, distance, ...)
+function renderSellOut() {
+  const b = S.batch;
+  if (!b) return;
+  const m = [...S.matches],
+    g = S.goal;
+  const sorts = {
+    profit: (x, y) => y.net - x.net,
+    distance: (x, y) => x.dist - y.dist,
+    local: (x, y) => x.dist - y.dist,
+    pickup: (x, y) => x.pr - y.pr || y.net - x.net,
+    price: (x, y) => y.bp - x.bp,
+  };
+  m.sort(sorts[g]);
+  $("#sellOut").innerHTML = `
+   <div class="card"><div class="row"><b>${CROPS[b.crop].e} ${b.crop}</b><span class="pill">${b.conf}% confidence</span></div>
+     <div class="stats" style="margin-top:.7rem"><div class="stat"><b>${b.quality}/100</b><small>Quality (AI est.)</small></div><div class="stat"><b>${inr(b.price)}</b><small>Price / tonne</small></div><div class="stat"><b>${inr(b.price * b.qty)}</b><small>Batch value</small></div></div>
+     <p class="hi" style="margin:.6rem 0 0;font-size:.66rem">Quality &amp; price are AI estimates; final check happens at pickup. Your batch is now live in Market.</p></div>
+   <h3>AI-ranked buyers</h3>
+   <div class="chips">${Object.entries(GOALS)
+     .map(
+       ([k, v]) => `<button class="chip ${g === k ? "on" : ""}" data-act="goal" data-g="${k}">${v}</button>`,
+     )
+     .join("")}</div>
+   ${m
+     .map(
+       (
+         x,
+         i,
+       ) => `<div class="card"><div class="mrow"><div class="thumb" style="background:${CROPS[b.crop].bg};width:46px;height:46px;font-size:1.5rem">${x.e}</div>
+      <div><b style="font-size:.86rem">${x.type}</b>${i === 0 ? ' <span class="pill">Recommended</span>' : ""}<small style="display:block;font-size:.66rem;color:var(--mu)">${x.dist} km · pickup ${x.pick}</small></div>
+      <div class="net"><b>${inr(x.net)}</b><small>net return</small></div></div>
+      <div class="mdet">${inr(x.bp)}/t → ${inr(x.rev)} revenue − ${inr(x.tr)} transport − ${inr(x.h)} handling</div>
+      <button class="btn sm" data-act="book" data-t="${x.type}">Book this buyer</button></div>`,
+     )
+     .join("")}`;
+}
+
+// ---------- Orders ----------
+// makes a new order and sends notifications to both farmer and buyer
+function createOrder(o) {
+  o.id = "ORD-" + ++oid + SUF;
+  o.t = Date.now();
+  o.batchId = "B-" + Math.floor(100000 + Math.random() * 900000);
+  o.stage = 0;
+  o.rating = 0;
+  orders.unshift(o);
+  const l = listings.find((x) => x.id === o.listingId);
+  if (l && !o.partial) l.status = "Booked";
+  if (o.by === "farmer") {
+    notify("farmer", `Order ${o.id} placed for ${o.qty}t ${o.crop} with ${o.buyer}.`);
+    notify("buyer", `New order ${o.id}: ${o.qty}t ${o.crop} from ${o.farmer}.`);
+  } else {
+    notify("buyer", `Order ${o.id} requested: ${o.qty}t ${o.crop} from ${o.farmer}.`);
+    notify("farmer", `${o.buyer} requested order ${o.id} for your ${o.qty}t ${o.crop}.`);
+  }
+  go("orders");
+}
+// draws the orders with the 5 step tracker, the route bar and the passport after payment
+function renderOrders() {
+  $("#orders").innerHTML =
+    '<h3>My orders &amp; live tracking</h3><div class="flist">' +
+    (orders.length
+      ? [...orders]
+          .sort((a, b) => (b.t || 0) - (a.t || 0))
+          .map((o) => {
+            const pct = Math.round((o.stage / 4) * 100),
+              done = o.stage === 4,
+              c = CROPS[o.crop];
+            const stp = STAGES.map(
+              (s, i) =>
+                `<div class="s ${i < o.stage ? "d" : i === o.stage ? "c" : ""}"><i>${i < o.stage ? "✓" : i + 1}</i>${s}</div>`,
+            ).join("");
+            const dest = o.destCity ? `${o.destCity}, ${o.destState}` : o.buyer;
+            const pp = done
+              ? `<div class="pp"><div><span>Batch ID</span><span>${o.batchId}</span></div><div><span>Farmer</span><span>${o.farmer}</span></div><div><span>Waste type</span><span>${o.crop}</span></div><div><span>Quantity</span><span>${o.qty} t</span></div><div><span>Buyer</span><span>${o.buyer}</span></div><div><span>Farmer net return</span><span>${inr(o.net)}</span></div><div><span>Status</span><span class="pill">Completed</span></div></div>` +
+                (S.role === "buyer"
+                  ? `<div class="stars" data-oid="${o.id}">${[1, 2, 3, 4, 5].map((n) => `<span data-act="rate" data-n="${n}" class="${o.rating >= n ? "on" : ""}">★</span>`).join("")}</div>`
+                  : `<p class="hi" style="margin-top:.5rem">${o.rating ? "Buyer rating: <b>" + o.rating + "/5</b> ★" : "Awaiting buyer rating"}</p>`)
+              : "";
+            return `<div class="card"><div class="otop"><b>${c.e} ${o.id}</b><span class="pill ${done ? "" : "amb"}">${done ? "Completed" : STAGES[o.stage]}</span></div>
+      <small style="color:var(--mu);font-size:.7rem">${o.qty} t ${o.crop} · ${o.buyer}</small>
+      <div class="stp">${stp}</div>
+      <div class="route"><span class="pt">${o.city}</span><div class="bar"><i style="width:${pct}%"></i><em style="left:${pct}%">🚚</em></div><span class="pt">${dest}</span></div>
+      <small style="color:var(--mu);font-size:.66rem">${o.dist} km · ${pct}% of the journey</small>${pp}
+      ${done ? "" : `<button class="btn sm" style="margin-top:.7rem" data-act="adv" data-id="${o.id}">Advance to next stage →</button>`}</div>`;
+          })
+          .join("")
+      : '<div class="empty">No orders yet.<br>Book a buyer or request a listing to start tracking.</div>') +
+    "</div>";
+}
+// moves an order to the next stage (Placed -> Confirmed -> Pickup -> Picked up -> Paid)
+function advance(id) {
+  const o = orders.find((x) => x.id === id);
+  if (!o || o.stage >= 4) return;
+  o.stage++;
+  notify(
+    "both",
+    [
+      "",
+      `Order ${o.id} confirmed by buyer.`,
+      `Pickup scheduled for ${o.id}.`,
+      `${o.id} picked up — in transit.`,
+      `Payment completed for ${o.id}. Waste-to-Value Passport issued.`,
+    ][o.stage],
+  );
+  if (o.stage === 4 && !o.partial) {
+    const l = listings.find((x) => x.id === o.listingId);
+    if (l) l.status = "Sold";
+  }
+  renderOrders();
+}
+
+// ---------- Dashboard / Uses ----------
+// draws the dashboard numbers and bars
+function renderDash() {
+  const f = S.role === "farmer",
+    comp = orders.filter((o) => o.stage === 4),
+    rated = comp.filter((o) => o.rating);
+  const wallet = comp.reduce((s, o) => s + o.net, 0),
+    spent = comp.filter((o) => o.by === "buyer").reduce((s, o) => s + o.price * o.qty, 0);
+  const avg = rated.length ? (rated.reduce((s, o) => s + o.rating, 0) / rated.length).toFixed(1) : "–";
+  const st = f
+    ? [
+        [inr(wallet), "Wallet"],
+        [listings.filter((l) => l.mine).length, "My listings"],
+        [avg, "Avg rating"],
+      ]
+    : [
+        [orders.length, "Orders"],
+        [inr(spent), "Spent"],
+        [listings.filter((l) => l.status === "Available").length, "Available"],
+      ];
+  const by = Object.keys(CROPS).map((c) => [
+    c,
+    listings.filter((l) => l.crop === c && l.status === "Available").reduce((s, l) => s + l.qty, 0),
+  ]);
+  const mx = Math.max(1, ...by.map((x) => x[1])),
+    wk = [6, 9, 8, 14, 17, 21];
+  $("#dash").innerHTML =
+    `<h3>Dashboard</h3><div class="stats">${st.map(([n, l]) => `<div class="stat"><b>${n}</b><small>${l}</small></div>`).join("")}</div>
+   <div class="row2" style="margin-top:.8rem"><div class="card"><b style="font-size:.85rem">Waste available by type</b>${by.map(([c, q]) => `<div class="hb"><span>${c}</span><div><i style="width:${(q / mx) * 100}%"></i></div><b>${q} t</b></div>`).join("")}</div>
+   <div class="card"><b style="font-size:.85rem">Transactions · last 6 weeks (demo)</b><div class="vb">${wk.map((v, i) => `<div><i style="height:${v * 4}px"></i>W${i + 1}</div>`).join("")}</div></div></div>`;
+}
+$("#useGrid").innerHTML = USES.map(
+  (u) =>
+    `<div class="ucard" style="background:${u.bg}"><div class="em">${u.e}</div><b>${u.t}</b><p>${u.x}</p></div>`,
+).join("");
+$("#uState").innerHTML = stateOpts();
+$("#uState").addEventListener("change", uNote);
+function uNote() {
+  $("#uNote").textContent = "In " + $("#uState").value + ": " + STATES[$("#uState").value].use;
+}
+uNote();
+
+// ---------- AI assistant ----------
+// adds one message in the chat window
+function addMsg(r, h) {
+  const d = document.createElement("div");
+  d.className = "msg " + r;
+  d.innerHTML = h;
+  $("#chat").appendChild(d);
+  $("#chat").scrollTop = 1e6;
+}
+// NOTE: simple keyword matching, not a real AI. It checks the words of the question (animal, house, fuel ...)
+// and gives the matching answer from the USES list. A real LLM can be connected later.
+function answer(q) {
+  q = q.toLowerCase();
+  for (const s in STATES) if (q.includes(s.toLowerCase())) return `📍 <b>${s}:</b> ${STATES[s].use}`;
+  const m = USES.filter((u) => u.k.some((k) => q.includes(k)));
+  if (m.length) return m.map((u) => `${u.e} <b>${u.t}:</b> ${u.x}`).join("<br><br>");
+  if (/use|product|waste|straw|husk|stalk/.test(q))
+    return (
+      "This crop residue can be used for:<br><br>" +
+      USES.map((u) => `${u.e} <b>${u.t}</b> — ${u.x}`).join("<br><br>")
+    );
+  return "I'm a simple demo assistant — ask about animal feed, house building, biomass fuel, compost, mushrooms, biogas, or a state's typical use.";
+}
+// user asks a question in the chat
+function ask(t) {
+  t = (t || "").trim();
+  if (!t) return;
+  addMsg("u", t);
+  $("#aq").value = "";
+  setTimeout(() => addMsg("a", answer(t)), 350);
+}
+$("#aiChips").innerHTML = [
+  "What is the use of this product?",
+  "Can animals eat rice straw?",
+  "Can it be used to build a house?",
+  "What is it used for in Punjab?",
+]
+  .map((t) => `<button class="chip" data-act="chip-ai">${t}</button>`)
+  .join("");
+$("#aq").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") ask($("#aq").value);
+});
+addMsg(
+  "a",
+  "Hi! 👋 I'm your AI assistant. Ask me <b>what is the use of this product</b> — animal feed, building houses, fuel and more.",
+);
+
+// ---------- Actions (event delegation) ----------
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-act]");
+  if (!t) return;
+  const a = t.dataset.act,
+    id = t.dataset.id;
+  if (a === "detail" && e.target.closest(".acts")) return;
+  if (a === "go") go(t.dataset.s);
+  else if (a === "role") setRole(t.dataset.r);
+  else if (a === "bell") {
+    seen[S.role] = relevant().length;
+    updateBell();
+    sheet(
+      "<h4>🔔 Notifications</h4>" +
+        (relevant()
+          .map(
+            (n) =>
+              `<div class="ni">${n.text}<small>${n.aud === "both" ? "update" : n.aud} · ${n.time}</small></div>`,
+          )
+          .join("") || '<div class="empty">Nothing yet</div>'),
+    );
+  } else if (a === "loc")
+    (sheet(
+      `<h4>📍 Set your location</h4><label>State</label><select id="lState">${stateOpts()}</select><label>City / village</label><input id="lCity" value="${S.city}"><button class="btn" data-act="saveloc">Save location</button>`,
+    ),
+      ($("#lState").value = S.state));
+  else if (a === "saveloc") {
+    S.state = $("#lState").value;
+    S.city = $("#lCity").value || S.city;
+    locText();
+    closeSheet();
+    go(S.screen);
+    toast("Location updated — distances recalculated");
+  } else if (a === "crop") {
+    S.filter = t.dataset.c;
+    S.mine = false;
+    go("market");
+  } else if (a === "use") {
+    const u = USES.find((x) => x.id === t.dataset.u);
+    sheet(
+      `<h4>${u.e} ${u.t}</h4><p style="font-size:.84rem;line-height:1.5">${u.x}</p><div class="note">In ${S.state}: ${STATES[S.state].use}</div><button class="btn" data-act="askuse" data-q="What is the use of ${u.t.toLowerCase()}?">Ask AI more</button>`,
+    );
+  } else if (a === "askuse") {
+    closeSheet();
+    go("ai");
+    ask(t.dataset.q);
+  } else if (a === "cats")
+    sheet(
+      '<h4>Category</h4><div class="chips" style="flex-wrap:wrap">' +
+        ["All", ...Object.keys(CROPS)]
+          .map(
+            (c) =>
+              `<button class="chip ${(c === "All" ? !S.filter : S.filter === c) ? "on" : ""}" data-act="catpick" data-c="${c}">${c}</button>`,
+          )
+          .join("") +
+        "</div>",
+    );
+  else if (a === "catpick") {
+    S.filter = t.dataset.c === "All" ? "" : t.dataset.c;
+    S.mine = false;
+    closeSheet();
+    renderMarket();
+  } else if (a === "chip") {
+    S.mine = false;
+    S.filter = t.dataset.c === "All" ? "" : t.dataset.c;
+    renderMarket();
+  } else if (a === "call") {
+    const l = listings.find((x) => x.id === id);
+    toast(`📞 Calling ${l.farmer}… (demo)`);
+  } else if (a === "req") {
+    const l = listings.find((x) => x.id === id),
+      d = distKm(S.state, S.city, l.state, l.city),
+      tr = d * 45;
+    createOrder({
+      listingId: l.id,
+      crop: l.crop,
+      qty: l.qty,
+      farmer: l.farmer,
+      city: l.city + ", " + l.state,
+      price: l.price,
+      net: l.price * l.qty - tr - 200,
+      dist: d,
+      by: "buyer",
+      buyer: "Ramesh Traders",
+      destCity: S.city,
+      destState: S.state,
+    });
+  } else if (a === "detail") {
+    const l = listings.find((x) => x.id === id),
+      d = distKm(S.state, S.city, l.state, l.city),
+      c = CROPS[l.crop],
+      own = l.mine && S.role === "farmer";
+    sheet(`<div class="row"><h4>${c.e} ${l.crop}</h4><span class="pill">${l.status}</span></div>
+      <div class="stats"><div class="stat"><b>${inr(l.price)}</b><small>per tonne</small></div><div class="stat"><b>${l.qty} t</b><small>quantity</small></div><div class="stat"><b>${d} km</b><small>from you</small></div></div>
+      <p style="font-size:.8rem;margin:.8rem 0 .2rem"><b>${own ? "You" : l.farmer}</b> · ${l.city}, ${l.state} · Quality ${l.quality}/100</p>
+      <div class="note">Typical use in ${l.state}: ${STATES[l.state].use}</div>
+      <button class="btn ghost" data-act="askuse" data-q="What is the use of ${l.crop.toLowerCase()}?">🤖 What is this used for?</button>
+      ${!own ? `<button class="btn" data-act="callreq" data-id="${l.id}">${S.role === "buyer" && l.status === "Available" ? "Request order" : "Call farmer"}</button>` : ""}`);
+  } else if (a === "callreq") {
+    closeSheet();
+    const l = listings.find((x) => x.id === id);
+    if (S.role === "buyer" && l.status === "Available") {
+      document.querySelector(`[data-act="req"][data-id="${id}"]`)?.click() ||
+        toast("Open Market to request this");
+    } else toast(`📞 Calling ${l.farmer}… (demo)`);
+  } else if (a === "food") {
+    S.food = t.dataset.f;
+    renderFood();
+  } else if (a === "offer") offer(id);
+  else if (a === "dcall") {
+    const d = demand.find((x) => x.id === id);
+    toast(`📞 Calling ${d.buyer}… (demo)`);
+  } else if (a === "postreq") postReqSheet();
+  else if (a === "savereq") saveReq();
+  else if (a === "mybatches")
+    sheet(
+      "<h4>Your batches</h4>" +
+        (listings
+          .filter((l) => l.mine)
+          .map(listingCard)
+          .join("") || '<div class="empty">Nothing listed yet</div>'),
+    );
+  else if (a === "ddetail") {
+    const d = demand.find((x) => x.id === id),
+      k = KINDS[d.kind],
+      l = myBatchFor(d),
+      c = l ? offerCalc(d, l) : null;
+    sheet(`<div class="row"><h4>${k.e} ${esc(d.buyer)}</h4><span class="pill">${d.status}</span></div>
+      <p class="hi" style="margin:-.3rem 0 .6rem">${k.t} · ${esc(d.city)}, ${d.state}</p>
+      <div class="stats"><div class="stat"><b>${d.qty} t</b><small>needed</small></div><div class="stat"><b>${inr(d.price)}</b><small>per tonne</small></div><div class="stat"><b>${dDist(d)} km</b><small>from you</small></div></div>
+      ${c ? `<div class="note"><b>AI estimate for your ${l.qty} t batch:</b> ${inr(d.price * c.q)} revenue − ${inr(c.tr)} transport − ₹250 handling = <b>${inr(c.net)}</b> net${l.qty > d.qty ? ` (partial order: they need only ${d.qty} t)` : ""}</div>` : `<div class="note">You have no available ${d.crop.toLowerCase()} batch yet. List one to sell to this buyer.</div>`}
+      <div class="note">Typical use in ${d.state}: ${STATES[d.state].use}</div>
+      <button class="btn" data-act="offer" data-id="${d.id}">${l ? "Offer my batch" : "List a " + d.crop.toLowerCase() + " batch"}</button>`);
+  } else if (a === "analyze") analyze();
+  else if (a === "goal") {
+    S.goal = t.dataset.g;
+    renderSellOut();
+  } else if (a === "book") {
+    const x = S.matches.find((m) => m.type === t.dataset.t),
+      b = S.batch;
+    createOrder({
+      listingId: b.listingId,
+      crop: b.crop,
+      qty: b.qty,
+      farmer: b.farmer,
+      city: b.city + ", " + b.state,
+      price: x.bp,
+      net: x.net,
+      dist: x.dist,
+      by: "farmer",
+      buyer: x.type,
+    });
+  } else if (a === "adv") advance(id);
+  else if (a === "rate") {
+    const o = orders.find((x) => x.id === t.parentElement.dataset.oid);
+    o.rating = +t.dataset.n;
+    notify("farmer", `Order ${o.id} rated ${o.rating}/5 by ${o.buyer}.`);
+    renderOrders();
+  } else if (a === "send") ask($("#aq").value);
+  else if (a === "chip-ai") ask(t.textContent);
+});
+
+// food.js
+// Food & drink ideas for food-grade by-products (bran, corn husk, citrus peel).
+// If the backend is running it shows live data from RecipeDB / FlavorDB / CocktailDB, otherwise sample data.
+
+// ---------- Food & drink upcycling (RecipeDB + FlavorDB + CocktailDB) ----------
+const FOOD_SAMPLE = {
+  "Wheat bran": {
+    e: "🌾",
+    r: ["Multigrain bran roti", "Bran & jaggery muffins", "Savoury bran upma"],
+    p: ["Jaggery", "Cinnamon", "Roasted cumin"],
+    d: ["Roasted-bran & jaggery chai (no alcohol)", "Spiced bran buttermilk"],
+  },
+  "Rice bran": {
+    e: "🍚",
+    r: ["Rice-bran energy bars", "Bran-enriched khichdi", "Nuka-style bran pickle"],
+    p: ["Sesame", "Roasted peanut", "Coconut"],
+    d: ["Rice-bran & coconut cooler", "Toasted bran lassi"],
+  },
+  "Corn husk": {
+    e: "🌽",
+    r: ["Steamed corn parcels (tamale-style)", "Husk-wrapped steamed paneer", "Husk-steamed fish"],
+    p: ["Lime", "Green chilli", "Coriander"],
+    d: ["Lime & mint corn cooler"],
+  },
+  "Citrus peel": {
+    e: "🍊",
+    r: ["Candied peel", "Peel marmalade", "Peel pickle"],
+    p: ["Ginger", "Mint", "Black salt"],
+    d: ["Peel & ginger shrub spritzer", "Citrus-peel iced tea"],
+  },
+};
+const esc = (s) =>
+  String(s == null ? "" : s).replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  );
+// Is the backend (server.py) available? On a plain static host this stays false and sample data is used.
+const foodReady = fetch("/api/food/health")
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j) => !!(j && j.ok))
+  .catch(() => false);
+let foodTok = 0;
+// asks our backend for live data. Returns null if the backend is not there (then we show sample data)
+async function loadFoodLive(name) {
+  if (!(await foodReady)) return null;
+  try {
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), 20000);
+    const r = await fetch("/api/food/ideas?item=" + encodeURIComponent(name), { signal: c.signal });
+    clearTimeout(t);
+    return r.ok ? await r.json() : null;
+  } catch (e) {
+    return null;
+  }
+}
+// draws the 3 cards (recipes, flavours, drinks). Every card has a badge: Live or Sample
+async function renderFood() {
+  const names = Object.keys(FOOD_SAMPLE);
+  if (!S.food) S.food = names[0];
+  $("#fChips").innerHTML = names
+    .map(
+      (n) =>
+        `<button class="chip ${S.food === n ? "on" : ""}" data-act="food" data-f="${n}">${FOOD_SAMPLE[n].e} ${n}</button>`,
+    )
+    .join("");
+  const tok = ++foodTok;
+  $("#fOut").innerHTML = '<div class="empty">Loading ideas…</div>';
+  const live = await loadFoodLive(S.food);
+  if (tok !== foodTok) return;
+  const f = FOOD_SAMPLE[S.food],
+    ok = (k) => !!(live && live[k] && live[k].source === "live");
+  const badge = (b) => `<span class="pill ${b ? "" : "gry"}">${b ? "Live" : "Sample"}</span>`;
+  const li = (a) => `<ul class="fl">${a.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+  const why = (k) =>
+    live && live[k] && live[k].error && !ok(k)
+      ? `<div class="api">${esc(live[k].error)} — showing sample</div>`
+      : "";
+  const recOk = ok("recipes") && live.recipes.items.length,
+    flaOk = ok("flavor"),
+    driOk = ok("drinks") && live.drinks.items.length;
+  const recipes = recOk
+    ? li(
+        live.recipes.items.map(
+          (r) =>
+            esc(r.title) +
+            (r.region
+              ? ` <small style="color:var(--mu)">· ${esc(r.region)}${r.indian ? " · Indian" : ""}</small>`
+              : ""),
+        ),
+      )
+    : li(f.r);
+  const flavor = flaOk
+    ? `<p class="hi" style="margin:.35rem 0 0">${esc(live.flavor.entity)} · ${live.flavor.molecule_count} flavour molecules</p>` +
+      (live.flavor.profiles.length
+        ? `<div class="tags">${live.flavor.profiles.map((p) => `<span>${esc(p)}</span>`).join("")}</div>`
+        : "") +
+      (live.flavor.pairings.length
+        ? `<p class="hi" style="margin:.3rem 0 0">Pairs well with:</p>${li(live.flavor.pairings.map(esc))}`
+        : "")
+    : li(f.p);
+  const drinks = driOk
+    ? li(
+        live.drinks.items.map(
+          (d) => esc(d.name) + (d.via ? ` <small style="color:var(--mu)">· with ${esc(d.via)}</small>` : ""),
+        ),
+      )
+    : li(f.d);
+  const anyLive = recOk || flaOk || driOk;
+  $("#fOut").innerHTML = `<div class="flist">
+    <div class="card"><b>🍳 Recipe ideas</b> ${badge(recOk)}${recipes}<div class="api">RecipeDB · GET /recipe2-api/recipe-bytitle/recipeByTitle, then /recipe2-api/recipes_cuisine/cuisine/{region}</div>${why("recipes")}</div>
+    <div class="card"><b>🧪 Flavour pairings</b> ${badge(flaOk)}${flavor}<div class="api">FlavorDB · GET /flavordb/entities/by-entity-alias-readable, then /flavordb/entities/by-name-and-category</div>${why("flavor")}</div>
+    <div class="card"><b>🍹 Drink ideas (no alcohol)</b> ${badge(driOk)}${drinks}<div class="api">CocktailDB · non-alcoholic drinks that share a pairing ingredient</div>${why("drinks")}</div></div>
+    <div class="note">${anyLive ? "Live results come from the databases through the backend, so the API key never reaches the browser." : "Sample ideas shown. Run the backend (see README) to fetch live RecipeDB, FlavorDB and CocktailDB results."} Only clean, fresh, food-grade by-products qualify — never straw, husk, burnt, mouldy or pesticide-contaminated material.</div>`;
+}
+
+// sync.js
+// Keeps the Farmer app and the Buyer app in sync using our backend (/api/world/sync).
+// If there is no backend nothing happens and each app works alone with its own sample data.
+
+// ---------- Live sync between the Farmer app and the Buyer app (active only when the backend is running) ----------
+const SYNC = { ok: false, since: 0, snap: {}, sent: new Set(), busy: false, timer: null, fail: 0 };
+const sig = (o) => JSON.stringify(o, (k, v) => (k === "v" || k === "_rev" ? undefined : v));
+const COLS = () => ({ listings, demand, orders });
+// sync again after a short wait (called after something changes)
+function syncSoon() {
+  if (SYNC.ok) {
+    clearTimeout(SYNC.timer);
+    SYNC.timer = setTimeout(syncNow, 150);
+  }
+}
+// draws the current screen again after new data came from the server
+function rerender() {
+  const s = S.screen;
+  if (s === "home") renderHome();
+  else if (s === "market") renderMarket();
+  else if (s === "orders") renderOrders();
+  else if (s === "dash") renderDash();
+}
+// after a restart, move the id counters ahead of the ids already on the server so new ids dont repeat
+function rebase() {
+  const mx = (arr, re) =>
+    arr.reduce((m, x) => {
+      const k = re.exec(x.id);
+      return k ? Math.max(m, +k[1]) : m;
+    }, 0);
+  lid = Math.max(lid, mx(listings, /^L(\d+)/));
+  did = Math.max(did, mx(demand, /^D(\d+)/));
+  oid = Math.max(oid, mx(orders, /^ORD-(\d+)/));
+}
+// 1) find items that changed on this phone  2) send them  3) take the newer items that came back
+async function syncNow() {
+  if (SYNC.busy || !SYNC.ok) return;
+  SYNC.busy = true;
+  try {
+    const changes = {};
+    for (const [name, arr] of Object.entries(COLS())) {
+      changes[name] = [];
+      for (const it of arr) {
+        if (SYNC.snap[name + it.id] !== sig(it)) {
+          it.v = (it.v || 0) + 1;
+          changes[name].push(it);
+        }
+      }
+    }
+    const fresh = notifs.filter((n) => !SYNC.sent.has(n.nid));
+    const r = await fetch("/api/world/sync", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ since: SYNC.since, changes, notifs: fresh }),
+    });
+    if (!r.ok) throw new Error("sync " + r.status);
+    const w = await r.json();
+    for (const [name, arr] of Object.entries(changes))
+      for (const it of arr) SYNC.snap[name + it.id] = sig(it);
+    fresh.forEach((n) => SYNC.sent.add(n.nid));
+    let changed = false;
+    for (const [name, arr] of Object.entries(COLS())) {
+      for (const rit of w[name] || []) {
+        const i = arr.findIndex((x) => x.id === rit.id),
+          local = arr[i];
+        if (local && (local.v || 0) > (rit.v || 0)) continue; // newer local edit not sent yet
+        if (local && sig(local) === sig(rit)) {
+          local.v = rit.v;
+          SYNC.snap[name + rit.id] = sig(rit);
+          continue;
+        }
+        if (i >= 0) arr[i] = rit;
+        else arr.push(rit);
+        SYNC.snap[name + rit.id] = sig(rit);
+        changed = true;
+      }
+    }
+    for (const n of w.notifs || []) {
+      SYNC.sent.add(n.nid);
+      if (knownN.has(n.nid)) continue;
+      knownN.add(n.nid);
+      notifs.unshift(n);
+      changed = true;
+      if (n.aud === "both" || n.aud === S.role)
+        toast(`<b>${n.aud === "both" ? "Update" : n.aud === "farmer" ? "Farmer" : "Buyer"}:</b> ${n.text}`);
+    }
+    SYNC.since = w.rev;
+    SYNC.fail = 0;
+    rebase();
+    if (changed) {
+      updateBell();
+      rerender();
+    }
+  } catch (e) {
+    if (++SYNC.fail > 3) SYNC.ok = false;
+  } finally {
+    SYNC.busy = false;
+  }
+}
+// checks if the backend is there, if yes starts syncing every 2.5 seconds
+async function initSync() {
+  try {
+    const r = await fetch("/api/world/health");
+    if (!r.ok) return;
+    const j = await r.json();
+    if (!j.ok) return;
+    SYNC.ok = true;
+  } catch (e) {
+    return;
+  }
+  await syncNow();
+  rerender();
+  setInterval(() => {
+    if (SYNC.ok) syncNow();
+  }, 2500);
+}
+
+// main.js
+// Starts the app. This file must be loaded last.
+
+let deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('#installBtn').style.display='inline-block';});
+$('#installBtn').addEventListener('click',async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$('#installBtn').style.display='none';});
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+// ---------- Boot ----------
+buildNav();
+locText();
+go("home");
+initSync();
+</script>
+</body>
+</html>
